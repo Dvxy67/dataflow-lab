@@ -15,7 +15,7 @@ def connecter():
     while True:
         try:
             return pika.BlockingConnection(parametres)
-        except pika.exceptions.AMQPConnectionError:
+        except (pika.exceptions.AMQPConnectionError, OSError):
             print("RabbitMQ pas encore disponible, nouvel essai dans 3 s...")
             time.sleep(3)
 
