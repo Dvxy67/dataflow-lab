@@ -1,0 +1,438 @@
+{
+  "name": "Routage des flux",
+  "nodes": [
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "alertes",
+          "mode": "list",
+          "cachedResultName": "alertes"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "source": "={{ $json.source }}",
+            "valeur": "={{ $json.valeur }}",
+            "date_message": "={{ $json.date }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valeur",
+              "displayName": "valeur",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date_message",
+              "displayName": "date_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recu_le",
+              "displayName": "recu_le",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.8,
+      "position": [
+        64,
+        0
+      ],
+      "id": "bdf6ee6f-7558-40f3-ba2f-0c749c78764c",
+      "name": "Enregistrer alertes",
+      "credentials": {
+        "postgres": {
+          "id": "JPTIDWaDzsmQqFGu",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "evenements",
+          "mode": "list",
+          "cachedResultName": "evenements"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "type": "={{ $json.type }}",
+            "source": "={{ $json.source }}",
+            "valeur": "={{ $json.valeur }}",
+            "date_message": "={{ $json.date }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "type",
+              "displayName": "type",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "source",
+              "displayName": "source",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "valeur",
+              "displayName": "valeur",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "date_message",
+              "displayName": "date_message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recu_le",
+              "displayName": "recu_le",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.8,
+      "position": [
+        80,
+        -176
+      ],
+      "id": "fe7be668-1396-4d61-8aef-ac067e696c1a",
+      "name": "Enregistrer événements",
+      "credentials": {
+        "postgres": {
+          "id": "JPTIDWaDzsmQqFGu",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "log",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "0cf7e84a-06dc-472f-a41b-f34b7754eee6"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "8cccd7c5-14f4-434f-bfa8-870e39591c3e",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "mesure",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "ba703d81-3459-466e-be46-33d6c7e323f1",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "alerte",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 4
+                },
+                "conditions": [
+                  {
+                    "id": "c07cd024-7e0c-43aa-9093-2d9b2f441545",
+                    "leftValue": "={{ $json.type }}",
+                    "rightValue": "fichier",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.5,
+      "position": [
+        -112,
+        -16
+      ],
+      "id": "3a8b78ea-2c8b-4603-8791-8fe5bc7c07af",
+      "name": "Aiguiller par type"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "mode": "each",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.2,
+      "position": [
+        64,
+        160
+      ],
+      "id": "f0a0cfe7-e4ce-4993-9829-99ce0e7f31f1",
+      "name": "Convertir en fichier"
+    },
+    {
+      "parameters": {
+        "operation": "upload",
+        "bucketName": "fichiers",
+        "fileName": "={{ $('Aiguiller par type').item.json.source }}_{{ $('Aiguiller par type').item.json.date }}.json",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.s3",
+      "typeVersion": 1,
+      "position": [
+        224,
+        144
+      ],
+      "id": "12c84692-caa2-4f28-be78-34cbd256c0f9",
+      "name": "Stocker fichier S3",
+      "credentials": {
+        "s3": {
+          "id": "RYbc9OBjLqjX1Rkj",
+          "name": "S3 account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "queue": "flux",
+        "options": {
+          "durable": true,
+          "jsonParseBody": true,
+          "onlyContent": true
+        }
+      },
+      "type": "n8n-nodes-base.rabbitmqTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        -112
+      ],
+      "id": "613239b7-b4b5-45a8-ba60-6aa7256a1fe2",
+      "name": "Lire la file flux",
+      "credentials": {
+        "rabbitmq": {
+          "id": "nmITBVhWJ2tuRVRR",
+          "name": "RabbitMQ account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Aiguiller par type": {
+      "main": [
+        [
+          {
+            "node": "Enregistrer événements",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enregistrer événements",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enregistrer alertes",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Convertir en fichier",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convertir en fichier": {
+      "main": [
+        [
+          {
+            "node": "Stocker fichier S3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lire la file flux": {
+      "main": [
+        [
+          {
+            "node": "Aiguiller par type",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6e3439e9-a406-4999-8d4f-6b812c09f316",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "8b0fffa221ed6e2ab75bd222e8be95b17afe4c854b2156fa30639c05f780404d"
+  },
+  "nodeGroups": [],
+  "id": "XdoUAuB8e64Q88N0",
+  "tags": []
+}

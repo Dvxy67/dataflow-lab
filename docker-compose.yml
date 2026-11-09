@@ -13,6 +13,8 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+    restart: unless-stopped
+    mem_limit: 512m
 
   producteur:
     build: ./producteur
@@ -24,8 +26,9 @@ services:
       RABBITMQ_HOST: rabbitmq
       RABBITMQ_USER: ${RABBITMQ_USER}
       RABBITMQ_PASS: ${RABBITMQ_PASS}
-      INTERVALLE: "1"
+      INTERVALLE: "5"
     restart: unless-stopped
+    mem_limit: 128m
 
   n8n:
     image: n8nio/n8n
@@ -35,12 +38,50 @@ services:
     environment:
       GENERIC_TIMEZONE: Europe/Brussels
       TZ: Europe/Brussels
+      EXECUTIONS_DATA_SAVE_ON_SUCCESS: none
+      EXECUTIONS_DATA_PRUNE: "true"
     volumes:
       - n8n_data:/home/node/.n8n
     depends_on:
       rabbitmq:
         condition: service_healthy
     restart: unless-stopped
+    mem_limit: 768m
+
+  rustfs:
+    image: rustfs/rustfs:latest
+    container_name: rustfs
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      RUSTFS_ACCESS_KEY: ${MINIO_USER}
+      RUSTFS_SECRET_KEY: ${MINIO_PASS}
+      RUSTFS_CONSOLE_ENABLE: "true"
+    volumes:
+      - minio_data:/data
+    restart: unless-stopped
+    mem_limit: 256m
+
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASS}
+      POSTGRES_DB: dataflow
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d dataflow"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    mem_limit: 256m
 
 volumes:
   n8n_data:
+  minio_data:
+  postgres_data:
