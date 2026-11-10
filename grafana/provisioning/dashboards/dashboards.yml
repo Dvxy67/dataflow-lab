@@ -1,0 +1,7 @@
+apiVersion: 1
+providers:
+  - name: dataflow-lab
+    folder: dataflow-lab
+    type: file
+    options:
+      path: /etc/grafana/provisioning/dashboards
